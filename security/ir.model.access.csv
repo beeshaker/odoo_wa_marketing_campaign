@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wa_marketing_campaign,wa.marketing.campaign,model_wa_marketing_campaign,base.group_user,1,1,1,1
+access_wa_marketing_campaign_line,wa.marketing.campaign.line,model_wa_marketing_campaign_line,base.group_user,1,1,1,1
+access_wa_marketing_campaign_recipient,wa.marketing.campaign.recipient,model_wa_marketing_campaign_recipient,base.group_user,1,1,1,1
+access_wa_marketing_quote,wa.marketing.quote,model_wa_marketing_quote,base.group_user,1,1,1,1
+access_wa_marketing_job,wa.marketing.job,model_wa_marketing_job,base.group_user,1,1,1,1
+access_wa_marketing_creative,wa.marketing.creative,model_wa_marketing_creative,base.group_user,1,1,1,1

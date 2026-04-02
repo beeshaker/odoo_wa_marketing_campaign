@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_marketing_job_tree" model="ir.ui.view">
+        <field name="name">wa.marketing.job.tree</field>
+        <field name="model">wa.marketing.job</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="campaign_id"/>
+                <field name="external_job_id"/>
+                <field name="status"/>
+                <field name="send_mode"/>
+                <field name="total_recipients"/>
+                <field name="accepted_count"/>
+                <field name="rejected_count"/>
+                <field name="delivered_count"/>
+                <field name="failed_count"/>
+                <field name="started_at"/>
+                <field name="completed_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_wa_marketing_job" model="ir.actions.act_window">
+        <field name="name">Jobs</field>
+        <field name="res_model">wa.marketing.job</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

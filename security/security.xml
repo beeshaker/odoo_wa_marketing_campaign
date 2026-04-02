@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_wa_marketing_campaign_user" model="res.groups">
+        <field name="name">WA Marketing Campaign User</field>
+    </record>
+
+    <record id="group_wa_marketing_campaign_manager" model="res.groups">
+        <field name="name">WA Marketing Campaign Manager</field>
+        <field name="implied_ids" eval="[(4, ref('wa_marketing_campaign.group_wa_marketing_campaign_user'))]"/>
+    </record>
+</odoo>

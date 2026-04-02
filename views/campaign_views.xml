@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_marketing_campaign_tree" model="ir.ui.view">
+        <field name="name">wa.marketing.campaign.tree</field>
+        <field name="model">wa.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="campaign_name"/>
+                <field name="company_id"/>
+                <field name="send_mode"/>
+                <field name="objective"/>
+                <field name="media_type"/>
+                <field name="quoted_amount"/>
+                <field name="total_products"/>
+                <field name="total_recipients"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_wa_marketing_campaign_form" model="ir.ui.view">
+        <field name="name">wa.marketing.campaign.form</field>
+        <field name="model">wa.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <form string="WA Marketing Campaign">
+                <header>
+                    <button name="action_request_quote" type="object" string="Request Quote" class="btn-primary" invisible="state not in ('draft', 'failed')"/>
+                    <button name="action_generate_creative" type="object" string="Generate Creative" invisible="not latest_quote_id"/>
+                    <button name="action_edit_latest_creative" type="object" string="Edit Latest Creative" invisible="not latest_creative_id"/>
+                    <button name="action_approve_latest_creative" type="object" string="Approve Latest Creative" invisible="not latest_creative_id"/>
+                    <button name="action_mark_awaiting_approval" type="object" string="Set Awaiting Approval" invisible="state != 'quoted'"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state not in ('quoted', 'awaiting_approval')"/>
+                    <button name="action_send_campaign" type="object" string="Send Campaign" class="btn-primary" invisible="state not in ('quoted', 'awaiting_approval', 'approved')"/>
+                    <button name="action_refresh_job_status" type="object" string="Refresh Status" invisible="not latest_job_id"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('completed', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,quoted,awaiting_approval,approved,queued,sending,partial,completed,failed,cancelled"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                        <h2><field name="campaign_name"/></h2>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="user_id"/>
+                            <field name="send_mode"/>
+                            <field name="partner_id" invisible="send_mode != 'individual'"/>
+                            <field name="objective"/>
+                        </group>
+                        <group>
+                            <field name="media_type"/>
+                            <field name="send_now"/>
+                            <field name="schedule_at" invisible="send_now"/>
+                            <field name="quoted_amount" readonly="1"/>
+                            <field name="latest_quote_id" readonly="1"/>
+                            <field name="latest_creative_id" readonly="1"/>
+                            <field name="latest_job_id" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="total_products" readonly="1"/>
+                            <field name="total_recipients" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="delivered_count" readonly="1"/>
+                            <field name="failed_count" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Campaign Content">
+                        <group>
+                            <field name="message" placeholder="Main campaign caption/message used when sending"/>
+                        </group>
+                        <group>
+                            <field name="approved_asset_url" readonly="1" widget="url"/>
+                            <field name="creative_prompt" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Campaign Buttons">
+                        <group>
+                            <field name="cta_action"/>
+                            <field name="cta_product_id"
+                                   invisible="cta_action != 'add_to_cart'"
+                                   options="{'no_create': True, 'no_open': False}"/>
+                        </group>
+                        <group>
+                            <field name="cta_quantity"
+                                   invisible="cta_action != 'add_to_cart'"/>
+                            <field name="cta_button_text" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Creative Setup">
+                            <group>
+                                <group>
+                                    <field name="headline" placeholder="e.g. 10% Off Pizzas"/>
+                                    <field name="subheadline" placeholder="e.g. This weekend only"/>
+                                    <field name="cta_text" placeholder="e.g. Order Now"/>
+                                    <field name="visual_style"/>
+                                </group>
+                                <group>
+                                    <field name="brand_name" placeholder="e.g. Newage"/>
+                                    <field name="additional_instructions" placeholder="Short extra instruction only"/>
+                                    <field name="use_product_images"/>
+                                </group>
+                            </group>
+
+                            <separator string="Edit Existing Creative"/>
+                            <group>
+                                <group>
+                                    <field name="edit_instruction" placeholder="e.g. Make the background darker and add a bold 10% OFF badge"/>
+                                    <field name="edit_mode"/>
+                                </group>
+                                <group>
+                                    <field name="preserve_product"/>
+                                    <field name="negative_prompt" placeholder="e.g. don't change the product shape or key details"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Products">
+                            <field name="campaign_line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="is_menu_item"/>
+                                    <field name="wa_is_available"/>
+                                    <field name="image_url"/>
+                                    <field name="list_price"/>
+                                    <field name="marketing_note"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Recipients">
+                            <field name="recipient_line_ids">
+                                <list editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                    <field name="email"/>
+                                    <field name="opted_in"/>
+                                    <field name="send_status"/>
+                                    <field name="failure_reason"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Quotes">
+                            <field name="quote_ids" readonly="1">
+                                <list>
+                                    <field name="external_quote_id"/>
+                                    <field name="amount"/>
+                                    <field name="currency_code"/>
+                                    <field name="status"/>
+                                    <field name="expires_at"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Creatives">
+                            <field name="creative_ids" readonly="1">
+                                <list>
+                                    <field name="external_creative_job_id"/>
+                                    <field name="creative_type"/>
+                                    <field name="status"/>
+                                    <field name="is_approved"/>
+                                    <field name="asset_url" widget="url"/>
+                                    <field name="preview_url" widget="url"/>
+                                    <field name="prompt_text"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Jobs">
+                            <field name="job_ids" readonly="1">
+                                <list>
+                                    <field name="external_job_id"/>
+                                    <field name="status"/>
+                                    <field name="send_mode"/>
+                                    <field name="total_recipients"/>
+                                    <field name="accepted_count"/>
+                                    <field name="rejected_count"/>
+                                    <field name="delivered_count"/>
+                                    <field name="failed_count"/>
+                                    <field name="started_at"/>
+                                    <field name="completed_at"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_wa_marketing_campaign_search" model="ir.ui.view">
+        <field name="name">wa.marketing.campaign.search</field>
+        <field name="model">wa.marketing.campaign</field>
+        <field name="arch" type="xml">
+            <search string="Search Campaigns">
+                <field name="name"/>
+                <field name="campaign_name"/>
+                <field name="company_id"/>
+                <field name="user_id"/>
+                <field name="send_mode"/>
+                <field name="state"/>
+
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_quoted" string="Quoted" domain="[('state', '=', 'quoted')]"/>
+                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+
+                <separator/>
+
+                <filter name="group_company" string="Company" context="{'group_by': 'company_id'}"/>
+                <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                <filter name="group_send_mode" string="Send Mode" context="{'group_by': 'send_mode'}"/>
+                <filter name="group_owner" string="Owner" context="{'group_by': 'user_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_wa_marketing_campaign" model="ir.actions.act_window">
+        <field name="name">Campaigns</field>
+        <field name="res_model">wa.marketing.campaign</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

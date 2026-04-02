@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_marketing_creative_tree" model="ir.ui.view">
+        <field name="name">wa.marketing.creative.tree</field>
+        <field name="model">wa.marketing.creative</field>
+        <field name="arch" type="xml">
+            <list string="Creatives">
+                <field name="name"/>
+                <field name="campaign_id"/>
+                <field name="external_creative_job_id"/>
+                <field name="creative_type"/>
+                <field name="status"/>
+                <field name="is_approved"/>
+                <field name="asset_url" widget="url"/>
+                <field name="preview_url" widget="url"/>
+                <field name="prompt_text"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_wa_marketing_creative_form" model="ir.ui.view">
+        <field name="name">wa.marketing.creative.form</field>
+        <field name="model">wa.marketing.creative</field>
+        <field name="arch" type="xml">
+            <form string="Creative">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="campaign_id" readonly="1"/>
+                            <field name="external_creative_job_id" readonly="1"/>
+                            <field name="creative_type" readonly="1"/>
+                            <field name="status" readonly="1"/>
+                            <field name="is_approved"/>
+                        </group>
+                        <group>
+                            <field name="asset_url" widget="url" readonly="1"/>
+                            <field name="preview_url" widget="url" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Preview">
+                            <field name="preview_html" widget="html" readonly="1" nolabel="1"/>
+                        </page>
+
+                        <page string="Prompt / Edit Instruction">
+                            <field name="prompt_text" readonly="1" nolabel="1"/>
+                        </page>
+
+                        <page string="Raw Response">
+                            <field name="raw_response_json" readonly="1" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wa_marketing_creative" model="ir.actions.act_window">
+        <field name="name">Creatives</field>
+        <field name="res_model">wa.marketing.creative</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_wa_marketing_root"
+              name="WA Campaigns"
+              sequence="100"/>
+
+    <menuitem id="menu_wa_marketing_campaigns"
+              name="Campaigns"
+              parent="menu_wa_marketing_root"
+              action="action_wa_marketing_campaign"
+              sequence="5"/>
+
+    <menuitem id="menu_wa_marketing_settings"
+              name="Settings"
+              parent="menu_wa_marketing_root"
+              action="action_wa_campaign_settings"
+              sequence="10"/>
+
+    <menuitem id="menu_wa_marketing_creatives"
+              name="Creatives"
+              parent="menu_wa_marketing_root"
+              action="action_wa_marketing_creative"
+              sequence="15"/>
+
+    <menuitem id="menu_wa_marketing_quotes"
+              name="Quotes"
+              parent="menu_wa_marketing_root"
+              action="action_wa_marketing_quote"
+              sequence="20"/>
+
+    <menuitem id="menu_wa_marketing_jobs"
+              name="Jobs"
+              parent="menu_wa_marketing_root"
+              action="action_wa_marketing_job"
+              sequence="30"/>
+</odoo>

@@ -1,0 +1,28 @@
+{
+    "name": "WhatsApp Marketing Campaign",
+    "version": "1.0.0",
+    "summary": "WhatsApp marketing campaigns for restaurant products",
+    "category": "Marketing",
+    "author": "Your Company",
+    "license": "LGPL-3",
+    "depends": [
+        "base",
+        "mail",
+        "contacts",
+        "product",
+        "whatsapp_restaurant_connector",
+    ],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/sequence.xml",
+        "views/campaign_views.xml",
+        "views/quote_views.xml",
+        "views/job_views.xml",
+        "views/creative_views.xml",
+        "views/res_company_views.xml",
+        "views/menu_views.xml",
+    ],
+    "installable": True,
+    "application": True,
+}
