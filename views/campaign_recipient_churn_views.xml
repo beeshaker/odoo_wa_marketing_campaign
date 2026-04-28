@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_wa_marketing_campaign_form_churn_inherit" model="ir.ui.view">
+        <field name="name">wa.marketing.campaign.form.churn.inherit</field>
+        <field name="model">wa.marketing.campaign</field>
+        <field name="inherit_id" ref="wa_marketing_campaign.view_wa_marketing_campaign_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='recipient_line_ids']/list/field[@name='send_status']" position="after">
+                <field name="churn_risk_level" optional="show"/>
+                <field name="churn_risk_score" optional="show"/>
+                <field name="favorite_item" optional="show"/>
+                <field name="last_order_at" optional="show"/>
+                <field name="expected_next_order_at" optional="show"/>
+                <field name="churn_reason" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

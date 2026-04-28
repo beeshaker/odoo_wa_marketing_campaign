@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_wa_marketing_campaign_tree" model="ir.ui.view">
-        <field name="name">wa.marketing.campaign.tree</field>
+    <record id="view_wa_marketing_campaign_list" model="ir.ui.view">
+        <field name="name">wa.marketing.campaign.list</field>
         <field name="model">wa.marketing.campaign</field>
         <field name="arch" type="xml">
-            <list>
+            <list string="Campaigns">
                 <field name="name"/>
                 <field name="campaign_name"/>
                 <field name="company_id"/>
+                <field name="user_id"/>
                 <field name="send_mode"/>
                 <field name="objective"/>
                 <field name="media_type"/>
-                <field name="quoted_amount"/>
-                <field name="total_products"/>
-                <field name="total_recipients"/>
                 <field name="state"/>
+                <field name="quoted_amount"/>
+                <field name="delivered_count"/>
+                <field name="failed_count"/>
             </list>
         </field>
     </record>
@@ -23,18 +24,39 @@
         <field name="name">wa.marketing.campaign.form</field>
         <field name="model">wa.marketing.campaign</field>
         <field name="arch" type="xml">
-            <form string="WA Marketing Campaign">
+            <form string="Campaign">
                 <header>
-                    <button name="action_request_quote" type="object" string="Request Quote" class="btn-primary" invisible="state not in ('draft', 'failed')"/>
-                    <button name="action_generate_creative" type="object" string="Generate Creative" invisible="not latest_quote_id"/>
-                    <button name="action_edit_latest_creative" type="object" string="Edit Latest Creative" invisible="not latest_creative_id"/>
-                    <button name="action_approve_latest_creative" type="object" string="Approve Latest Creative" invisible="not latest_creative_id"/>
-                    <button name="action_mark_awaiting_approval" type="object" string="Set Awaiting Approval" invisible="state != 'quoted'"/>
-                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state not in ('quoted', 'awaiting_approval')"/>
-                    <button name="action_send_campaign" type="object" string="Send Campaign" class="btn-primary" invisible="state not in ('quoted', 'awaiting_approval', 'approved')"/>
-                    <button name="action_refresh_job_status" type="object" string="Refresh Status" invisible="not latest_job_id"/>
-                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('completed', 'cancelled')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,quoted,awaiting_approval,approved,queued,sending,partial,completed,failed,cancelled"/>
+                    <button name="action_request_quote"
+                            string="Request Quote"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state not in ('draft', 'failed', 'cancelled')"/>
+
+                    <button name="action_generate_creative"
+                            string="Generate Creative"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ('quoted', 'awaiting_approval', 'approved')"/>
+
+                    <button name="action_edit_latest_creative"
+                            string="Edit Latest Creative"
+                            type="object"
+                            invisible="latest_creative_id == False"/>
+
+                    <button name="action_approve_latest_creative"
+                            string="Approve Latest Creative"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="latest_creative_id == False"/>
+
+                    <button name="action_send_campaign"
+                            string="Send Campaign"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ('approved', 'queued')"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,quoted,awaiting_approval,approved,queued,sending,partial,completed,failed,cancelled"/>
                 </header>
 
                 <sheet>
@@ -150,9 +172,20 @@
                                     <field name="email"/>
                                     <field name="opted_in"/>
                                     <field name="send_status"/>
+                                    <field name="churn_risk_level" optional="show"/>
+                                    <field name="churn_risk_score" optional="show"/>
+                                    <field name="favorite_item" optional="show"/>
+                                    <field name="last_order_at" optional="show"/>
+                                    <field name="expected_next_order_at" optional="show"/>
                                     <field name="failure_reason"/>
                                 </list>
                             </field>
+
+                            <group string="Selected Recipient Insight" invisible="send_mode != 'individual'">
+                                <group>
+                                    <field name="partner_id" readonly="1"/>
+                                </group>
+                            </group>
                         </page>
 
                         <page string="Quotes">

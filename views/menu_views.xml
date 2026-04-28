@@ -10,6 +10,12 @@
               action="action_wa_marketing_campaign"
               sequence="5"/>
 
+    <menuitem id="menu_wa_marketing_customer_profiles"
+              name="Customer Intelligence"
+              parent="menu_wa_marketing_root"
+              action="action_wa_marketing_customer_profile"
+              sequence="8"/>
+
     <menuitem id="menu_wa_marketing_settings"
               name="Settings"
               parent="menu_wa_marketing_root"
